@@ -17,6 +17,7 @@ public class TriggerApis
         List<string> apiUrlList = new List<string>()
         {
             "https://fastreadingapi.azurewebsites.net/api/Test/WakeupCall?from=AzureFunctions",
+            "https://cornyapi.azurewebsites.net/api/Test/WakeupCall?from=AzureFunctions"
         };
         try
         {

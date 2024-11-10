@@ -13,19 +13,25 @@ public class TriggerApis
         var logger = context.GetLogger("TriggerApiEveryMinute");
         logger.LogInformation($"Function executed at: {DateTime.Now}");
 
-        string apiUrl = "https://your-api-url.com/trigger"; // Replace with your actual API URL
-
+        //string apiUrl = "https://your-api-url.com/trigger"; // Replace with your actual API URL
+        List<string> apiUrlList = new List<string>()
+        {
+            "https://fastreadingapi.azurewebsites.net/api/Test/WakeupCall?from=AzureFunctions",
+        };
         try
         {
-            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+            foreach (var apiUrl in apiUrlList)
+            {
+                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
-            if (response.IsSuccessStatusCode)
-            {
-                logger.LogInformation($"API triggered successfully. Status Code: {response.StatusCode}");
-            }
-            else
-            {
-                logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
+                if (response.IsSuccessStatusCode)
+                {
+                    logger.LogInformation($"API triggered successfully. Status Code: {response.StatusCode}");
+                }
+                else
+                {
+                    logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
+                }
             }
         }
         catch (Exception ex)

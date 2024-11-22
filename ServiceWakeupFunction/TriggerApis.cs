@@ -40,4 +40,31 @@ public class TriggerApis
             logger.LogError($"Error triggering API: {ex.Message}");
         }
     }
+    
+    [Function("TriggerApiEveryTwoMinutes")]
+    public async Task RunEveryTwoMinutes([TimerTrigger("0 */2 * * * *")] TimerInfo timer, FunctionContext context)
+    {
+        var logger = context.GetLogger("TriggerApiEveryTwoMinutes");
+        logger.LogInformation($"Function executed at: {DateTime.Now}");
+
+        string apiUrl = "https://fastreadingapi.azurewebsites.net/api/Activity/PeriodicTeacherActivityCheck"; // Replace with your actual API URL
+
+        try
+        {
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                logger.LogInformation($"API triggered successfully. Status Code: {response.StatusCode}");
+            }
+            else
+            {
+                logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Error triggering API: {ex.Message}");
+        }
+    }
 }

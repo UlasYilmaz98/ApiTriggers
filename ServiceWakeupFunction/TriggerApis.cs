@@ -18,9 +18,37 @@ public class TriggerApis
         {
             "https://fastreadingapi.azurewebsites.net/api/Test/WakeupCall?from=AzureFunctions",
             "https://cornyapi.azurewebsites.net/api/Test/WakeupCall?from=AzureFunctions"
+            
         };
         try
         {
+
+            if (DateTime.UtcNow.Hour == 16 && DateTime.UtcNow.Minute == 0)
+            {
+                HttpResponseMessage response = await httpClient.GetAsync("https://okutioapi.azurewebsites.net/api/Notification/SendType1Notifications");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    logger.LogInformation($"API triggered successfully. Status Code: {response.StatusCode}");
+                }
+                else
+                {
+                    logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
+                }
+            }
+            else if (DateTime.UtcNow.Hour == 11 && DateTime.UtcNow.Minute == 0)
+            {
+                HttpResponseMessage response = await httpClient.GetAsync("https://okutioapi.azurewebsites.net/api/Notification/SendType2Notifications");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    logger.LogInformation($"API triggered successfully. Status Code: {response.StatusCode}");
+                }
+                else
+                {
+                    logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
+                }
+            }
             foreach (var apiUrl in apiUrlList)
             {
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);

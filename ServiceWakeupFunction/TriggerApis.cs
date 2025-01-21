@@ -38,7 +38,7 @@ public class TriggerApis
                     logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
                 }
             }
-            else if (DateTime.UtcNow.Hour == 11 && DateTime.UtcNow.Minute == 0)
+            /*else if (DateTime.UtcNow.Hour == 11 && DateTime.UtcNow.Minute == 0)
             {
                 HttpResponseMessage response = await httpClient.GetAsync("https://okutioapi.azurewebsites.net/api/Notification/SendType2Notifications?timezone=tr");
 
@@ -50,7 +50,7 @@ public class TriggerApis
                 {
                     logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
                 }
-            }
+            }*/
             else if (easternTime.Hour == 19 && easternTime.Minute == 0)
             {
                 HttpResponseMessage response = await httpClient.GetAsync("https://okutioapi.azurewebsites.net/api/Notification/SendType1Notifications?timezone=us");
@@ -64,7 +64,7 @@ public class TriggerApis
                     logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
                 }
             }
-            else if (easternTime.Hour == 14 && easternTime.Minute == 0)
+            /*else if (easternTime.Hour == 14 && easternTime.Minute == 0)
             {
                 HttpResponseMessage response = await httpClient.GetAsync("https://okutioapi.azurewebsites.net/api/Notification/SendType2Notifications?timezone=us");
 
@@ -76,7 +76,7 @@ public class TriggerApis
                 {
                     logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
                 }
-            }
+            }*/
             foreach (var apiUrl in apiUrlList)
             {
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);

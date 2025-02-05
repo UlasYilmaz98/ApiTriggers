@@ -103,6 +103,7 @@ public class TriggerApis
         var logger = context.GetLogger("TriggerApiEveryTwoMinutes");
         logger.LogInformation($"Function executed at: {DateTime.Now}");
 
+        
         string apiUrl = "https://fastreadingapi.azurewebsites.net/api/Activity/PeriodicTeacherActivityCheck"; // Replace with your actual API URL
 
         try
@@ -130,24 +131,37 @@ public class TriggerApis
         var logger = context.GetLogger("OkutPeriodicActivityCheck");
         logger.LogInformation($"Function executed at: {DateTime.Now}");
 
-        string apiUrl = "https://okutioapi.azurewebsites.net/api/v2/Activity/PeriodicActivityCheck"; // Replace with your actual API URL
 
-        try
+
+        List<string> apiUrls = new List<string>()
         {
-            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+            "https://okutioapi.azurewebsites.net/api/v2/Activity/PeriodicActivityCheck",
+            "https://okutioapi.azurewebsites.net/api/v2/Event/InsertIpLocations"
 
-            if (response.IsSuccessStatusCode)
+        };
+
+        foreach (var apiUrl in apiUrls)
+        {
+            try
             {
-                logger.LogInformation($"API triggered successfully. Status Code: {response.StatusCode}");
+                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    logger.LogInformation($"API triggered successfully. Status Code: {response.StatusCode}");
+                }
+                else
+                {
+                    logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                logger.LogWarning($"API trigger failed. Status Code: {response.StatusCode}");
+                logger.LogError($"Error triggering API: {ex.Message}");
             }
         }
-        catch (Exception ex)
-        {
-            logger.LogError($"Error triggering API: {ex.Message}");
-        }
+        
+        
+        
     }
 }
